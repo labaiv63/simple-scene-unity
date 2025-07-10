@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class PlayEffect : MonoBehaviour
+public class PlayEffect : MonoCache
 {
     [SerializeField] private GameObject effect;
     private IInteracteble interactAction => GetComponent<IInteracteble>();
@@ -12,16 +12,16 @@ public class PlayEffect : MonoBehaviour
     }
     public void SubscribeTo()
     {
-        interactAction.OnInteract += SpawnedEffect;
+        interactAction.OnInteractEnd += SpawnedEffect;
     }
     public void UnsubscribeTo()
     {
-        interactAction.OnInteract -= SpawnedEffect;
+        interactAction.OnInteractEnd -= SpawnedEffect;
     }
     private void OnDestroy() => UnsubscribeTo();
     public void SpawnedEffect() 
     {
         if(effect != null)
-            Instantiate(effect);
+            Instantiate(effect, transform.position, Quaternion.identity, transform.parent);
     }
 }
